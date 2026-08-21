@@ -1,0 +1,189 @@
+:root {
+  --color-primary: #5A3825;
+  --color-success: #667044;
+  --color-bg: #f8f9fa;
+  --color-surface: #ffffff;
+  --color-text: #333333;
+  --color-text-muted: #666666;
+  --color-border: #e0e0e0;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Auth */
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.login-form {
+  background: var(--color-surface);
+  padding: 2.5rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  width: 100%;
+  max-width: 400px;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+}
+
+/* Buttons */
+button {
+  cursor: pointer;
+  border: none;
+  border-radius: 4px;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  transition: opacity 0.2s;
+}
+
+button:hover { opacity: 0.9; }
+button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.btn-primary { background-color: var(--color-primary); color: white; width: 100%; }
+.btn-success { background-color: var(--color-success); color: white; width: 100%; }
+.btn-secondary { background-color: #e0e0e0; color: #333; width: 100%; }
+.btn-sm { padding: 0.5rem 1rem; font-size: 0.875rem; }
+
+/* Layout */
+.dashboard-layout {
+  display: flex;
+  height: 100vh;
+}
+
+.sidebar {
+  width: 250px;
+  background-color: var(--color-primary);
+  color: white;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-header { padding: 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.1); }
+.sidebar-header h2 { margin: 0; font-size: 1.25rem; }
+.sidebar-header p { margin: 0.5rem 0 0 0; opacity: 0.8; font-size: 0.875rem; }
+
+.sidebar-nav { flex-grow: 1; padding: 1rem 0; }
+.sidebar-nav a {
+  display: block;
+  padding: 1rem 1.5rem;
+  color: white;
+  text-decoration: none;
+  opacity: 0.8;
+}
+.sidebar-nav a:hover, .sidebar-nav a.active {
+  background-color: rgba(255,255,255,0.1);
+  opacity: 1;
+}
+
+.sidebar-footer { padding: 1.5rem; }
+
+.main-content {
+  flex-grow: 1;
+  padding: 2rem;
+  overflow-y: auto;
+}
+
+/* Typography & Headers */
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+.page-header h1 { margin: 0; }
+
+.live-indicator {
+  font-weight: 600;
+  color: var(--color-success);
+}
+
+/* Kitchen Queue Grid */
+.order-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.order-card {
+  background: white;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  border-left: 4px solid var(--color-border);
+}
+
+.order-card.status-received { border-left-color: #ff9800; }
+.order-card.status-preparing { border-left-color: #2196f3; }
+.order-card.status-ready { border-left-color: var(--color-success); }
+
+.order-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.5rem; }
+.order-header h3 { margin: 0; font-size: 1.5rem; }
+.order-status { font-weight: bold; text-transform: uppercase; font-size: 0.875rem; }
+
+.status-received .order-status { color: #ff9800; }
+.status-preparing .order-status { color: #2196f3; }
+.status-ready .order-status { color: var(--color-success); }
+
+.order-meta { margin: 0 0 1rem 0; color: var(--color-text-muted); }
+
+.order-items {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.5rem 0;
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+}
+.order-items li { padding: 0.75rem 0; border-bottom: 1px solid #f0f0f0; }
+.order-items li:last-child { border-bottom: none; }
+
+/* Tables */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+.data-table th, .data-table td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid var(--color-border);
+}
+.data-table th { background-color: #f8f9fa; font-weight: 600; color: var(--color-text-muted); }
+
+.badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 99px;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+.badge-active { background-color: #e8f5e9; color: #2e7d32; }
+.badge-sold-out { background-color: #ffebee; color: #c62828; }

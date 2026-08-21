@@ -1,0 +1,557 @@
+.menu-container {
+  max-width: 450px;
+  margin: 0 auto;
+  min-height: 100vh;
+  position: relative;
+  background-color: var(--color-paper);
+  box-shadow: 0 0 20px rgba(0,0,0,0.1);
+  overflow-x: hidden;
+  /* Additional wood texture context behind the menu if on desktop */
+}
+
+/* Make sure the body has a darker background on desktop to contrast the paper menu container */
+@media (min-width: 451px) {
+  body {
+    background-color: var(--color-deep-coffee);
+    background-image: none; /* Remove noise from body, keep it on the container */
+  }
+}
+
+.menu-cover {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 2rem;
+  background-color: var(--color-paper);
+  /* Use the noise texture here too so it matches the inner paper */
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E");
+  z-index: 10;
+  transform-origin: left center;
+  transition: transform var(--motion-slow) ease-in-out, opacity var(--motion-slow) ease-in-out;
+  border: 4px double var(--color-coffee);
+  box-sizing: border-box;
+  margin: 10px;
+  width: calc(100% - 20px);
+  height: calc(100vh - 20px);
+  cursor: pointer;
+}
+
+.menu-cover.open {
+  transform: rotateY(-90deg) scale(0.95);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.cover-title {
+  font-size: 3rem;
+  line-height: 1.1;
+  margin-bottom: 1rem;
+}
+
+.cover-subtitle {
+  font-size: 1.25rem;
+  color: var(--color-burnt-orange);
+  margin-bottom: 2rem;
+}
+
+.cover-cta {
+  font-size: 1.1rem;
+  margin-top: 3rem;
+  animation: pulse 2s infinite;
+  color: var(--color-olive);
+}
+
+@keyframes pulse {
+  0% { opacity: 0.6; }
+  50% { opacity: 1; }
+  100% { opacity: 0.6; }
+}
+
+.category-index {
+  padding: 3rem 2rem;
+}
+
+.category-index-title {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 3rem;
+  border-bottom: 2px solid var(--color-coffee);
+  padding-bottom: 1rem;
+}
+
+.category-list {
+  list-style: none;
+}
+
+.category-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: 1.75rem;
+  font-family: var(--font-display);
+  color: var(--color-deep-coffee);
+  margin-bottom: 1.5rem;
+  cursor: pointer;
+  transition: color var(--motion-fast);
+}
+
+.category-item:hover, .category-item:active {
+  color: var(--color-burnt-orange);
+}
+
+.category-leader {
+  flex-grow: 1;
+  border-bottom: 2px dotted var(--color-mustard);
+  margin: 0 10px;
+  position: relative;
+  top: -6px;
+  opacity: 0.6;
+}
+
+/* --- Phase 3: Dish Carousel --- */
+.dish-carousel-container {
+  padding: 2rem 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.carousel-header {
+  padding: 0 2rem;
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.back-btn {
+  background: none;
+  border: none;
+  font-size: 1.25rem;
+  color: var(--color-coffee);
+  cursor: pointer;
+  transition: opacity var(--motion-fast);
+}
+
+.back-btn:hover {
+  opacity: 0.7;
+}
+
+.carousel-category-title {
+  font-size: 1.75rem;
+}
+
+.carousel-track {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding: 0 2rem;
+  gap: 1.5rem;
+  scrollbar-width: none; /* Hide scrollbar Firefox */
+}
+
+.carousel-track::-webkit-scrollbar {
+  display: none; /* Hide scrollbar Chrome/Safari */
+}
+
+.dish-card {
+  /* Give the active card most of the width, letting the next card peek in */
+  flex: 0 0 calc(100% - 3rem); 
+  scroll-snap-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  transition: transform var(--motion-fast);
+}
+
+.dish-card:active {
+  transform: scale(0.98);
+}
+
+.dish-object-placeholder {
+  width: 100%;
+  aspect-ratio: 4/5;
+  background-color: var(--color-ivory);
+  border: 2px solid var(--color-coffee);
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  box-shadow: 4px 4px 0px rgba(90, 56, 37, 0.1);
+  overflow: hidden;
+}
+
+.dish-real-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.dish-object-icon {
+  font-size: 5rem;
+  opacity: 0.5;
+}
+
+.dish-name {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+
+.dish-price {
+  font-size: 1.25rem;
+  color: var(--color-burnt-orange);
+}
+
+/* --- Phase 4: Dish Detail --- */
+.dish-detail-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--color-paper);
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  animation: slideUp var(--motion-normal) ease-out;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100%); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes dishScale {
+  from { transform: scale(0.6) translateY(50px); }
+  to { transform: scale(1) translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-dish-scale {
+  animation: dishScale var(--motion-normal) cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.animate-fade-in {
+  animation: fadeIn var(--motion-normal) ease-out forwards;
+  animation-delay: 100ms;
+  opacity: 0;
+}
+
+.detail-close-btn {
+  padding: 1.5rem 2rem 0.5rem;
+  text-align: left;
+}
+
+.detail-scroll-area {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0 2rem 2rem;
+  /* Hide scrollbar for cleaner look */
+  scrollbar-width: none;
+}
+.detail-scroll-area::-webkit-scrollbar { display: none; }
+
+.detail-hero {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.detail-object {
+  width: 80%;
+  margin: 0 auto 1.5rem;
+}
+
+.detail-title {
+  font-size: 2.25rem;
+  margin-bottom: 1rem;
+}
+
+.detail-description {
+  font-size: 1.1rem;
+  line-height: 1.5;
+  color: var(--color-deep-coffee);
+  opacity: 0.9;
+}
+
+.customization-group {
+  margin-bottom: 2rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px dashed rgba(53, 35, 25, 0.2);
+}
+
+.customization-title {
+  font-size: 1.25rem;
+  font-family: var(--font-heading);
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.customization-options {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.customization-label {
+  display: flex;
+  align-items: center;
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+
+.customization-label input {
+  margin-right: 1rem;
+  accent-color: var(--color-olive);
+  width: 1.2rem;
+  height: 1.2rem;
+}
+
+.customization-label span:nth-child(2) {
+  flex-grow: 1;
+}
+
+.price-delta {
+  font-family: var(--font-price);
+  color: var(--color-burnt-orange);
+}
+
+.quantity-group {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: none;
+}
+
+.quantity-selector {
+  display: flex;
+  align-items: center;
+  border: 2px solid var(--color-coffee);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.quantity-selector button {
+  background-color: var(--color-ivory);
+  border: none;
+  color: var(--color-coffee);
+  font-size: 1.5rem;
+  width: 3rem;
+  height: 3rem;
+  cursor: pointer;
+  transition: background-color var(--motion-fast);
+}
+
+.quantity-selector button:active {
+  background-color: var(--color-paper);
+}
+
+.quantity-value {
+  width: 3rem;
+  text-align: center;
+  font-size: 1.25rem;
+  font-family: var(--font-heading);
+}
+
+.detail-footer {
+  padding: 1rem 2rem 2rem;
+  background: linear-gradient(to top, var(--color-paper) 80%, transparent);
+}
+
+.add-to-cart-btn {
+  width: 100%;
+  background-color: var(--color-coffee);
+  color: var(--color-ivory);
+  border: none;
+  padding: 1.25rem;
+  font-size: 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color var(--motion-fast), transform var(--motion-fast);
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.add-to-cart-btn:active {
+  transform: scale(0.98);
+  background-color: var(--color-deep-coffee);
+}
+
+/* --- Phase 5: Cart & Checkout --- */
+.floating-cart-btn {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--color-burnt-orange);
+  color: var(--color-ivory);
+  border: none;
+  padding: 1rem 2.5rem;
+  font-size: 1.25rem;
+  border-radius: 50px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  cursor: pointer;
+  z-index: 40;
+  transition: transform var(--motion-fast);
+  white-space: nowrap;
+}
+
+.floating-cart-btn:active {
+  transform: translateX(-50%) scale(0.95);
+}
+
+.cart-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--color-paper);
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  animation: slideUp var(--motion-normal) ease-out;
+}
+
+.cart-scroll-area {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0 2rem 2rem;
+  scrollbar-width: none;
+}
+.cart-scroll-area::-webkit-scrollbar { display: none; }
+
+.cart-items-list {
+  margin-bottom: 2rem;
+  border-top: 2px dashed rgba(53, 35, 25, 0.2);
+  padding-top: 1rem;
+}
+
+.cart-item {
+  margin-bottom: 1.5rem;
+}
+
+.cart-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 0.25rem;
+}
+
+.cart-item-qty {
+  font-weight: bold;
+  margin-right: 0.5rem;
+  color: var(--color-coffee);
+}
+
+.cart-item-name {
+  flex: 1;
+  font-family: var(--font-heading);
+  font-size: 1.2rem;
+}
+
+.cart-item-price {
+  font-size: 1.1rem;
+}
+
+.cart-summary {
+  border-top: 2px solid var(--color-coffee);
+  padding-top: 1rem;
+}
+
+.summary-line {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.total-line {
+  font-size: 1.5rem;
+  margin-top: 1rem;
+  border-top: 1px dashed rgba(53, 35, 25, 0.2);
+  padding-top: 1rem;
+  color: var(--color-coffee);
+}
+
+.action-btn-group {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  display: flex;
+  gap: 0.5rem;
+  z-index: 50;
+}
+
+.quick-action-btn {
+  background-color: var(--color-ivory);
+  color: var(--color-coffee);
+  border: 1px solid var(--color-coffee);
+  padding: 0.4rem 0.8rem;
+  font-family: var(--font-heading);
+  font-size: 0.9rem;
+  border-radius: 4px;
+  cursor: pointer;
+  box-shadow: 2px 2px 0px rgba(90, 56, 37, 0.2);
+}
+
+.quick-action-btn:active {
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 0px rgba(90, 56, 37, 0.2);
+}
+
+.success-screen {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 2rem;
+}
+
+.checkout-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-group label {
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  color: var(--color-coffee);
+}
+
+.form-group input {
+  padding: 1rem;
+  border: 2px solid var(--color-coffee);
+  border-radius: 4px;
+  background-color: transparent;
+  font-family: var(--font-body);
+  font-size: 1.1rem;
+  color: var(--color-deep-coffee);
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: var(--color-burnt-orange);
+}
+
+.category-icon {
+  font-size: 1.25rem;
+}

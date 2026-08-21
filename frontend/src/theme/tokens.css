@@ -1,0 +1,23 @@
+:root {
+  /* Colors */
+  --color-paper: #F4E7CF;
+  --color-ivory: #FFF7E8;
+  --color-coffee: #5A3825;
+  --color-deep-coffee: #352319;
+  --color-olive: #667044;
+  --color-mustard: #C49A32;
+  --color-burnt-orange: #B85D32;
+  --color-terracotta: #9B5038;
+
+  /* Typography */
+  --font-display: "Fraunces", serif;
+  --font-heading: "Lora", serif;
+  --font-body: "DM Sans", sans-serif;
+  --font-price: "Lora", serif;
+  --font-accent: "Caveat", cursive;
+
+  /* Motion */
+  --motion-fast: 200ms;
+  --motion-normal: 400ms;
+  --motion-slow: 700ms;
+}
