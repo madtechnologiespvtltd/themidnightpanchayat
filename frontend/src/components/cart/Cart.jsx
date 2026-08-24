@@ -5,7 +5,11 @@ import { supabase } from '../../lib/supabase';
 export default function Cart({ items, onClose, onClearCart, onCheckoutSuccess }) {
   const [isProcessing, setIsProcessing] = useState(false);
   const [isCheckoutFormOpen, setIsCheckoutFormOpen] = useState(false);
-  const [customerDetails, setCustomerDetails] = useState({ name: '', phone: '', table: '' });
+  const [customerDetails, setCustomerDetails] = useState(() => {
+    const params = new URLSearchParams(window.location.search);
+    const table = params.get('table') || '';
+    return { name: '', phone: '', table };
+  });
 
   const calculateSubtotal = () => {
     return items.reduce((acc, item) => {
