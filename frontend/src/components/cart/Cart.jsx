@@ -121,7 +121,7 @@ export default function Cart({ items, onClose, onClearCart, onCheckoutSuccess })
               <>
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem', background: 'rgba(90, 56, 37, 0.05)', padding: '1rem', borderRadius: '8px', border: '1px dashed var(--color-coffee)', marginTop: '0.5rem' }}>
                   <span style={{ fontWeight: 'bold', fontFamily: 'var(--font-heading)' }}>Scan to Pay</span>
-                  <img src={paymentQr} alt="Payment QR" style={{ maxWidth: '180px', height: 'auto', borderRadius: '4px', background: 'white', padding: '5px' }} />
+                  <img src={paymentQr} alt="Payment QR" style={{ maxWidth: '280px', height: 'auto', borderRadius: '4px', background: 'white', padding: '5px' }} />
                   <span style={{ fontSize: '0.85rem', opacity: 0.8, textAlign: 'center' }}>Please scan the QR code above to pay before confirming.</span>
                 </div>
                 
@@ -160,7 +160,7 @@ export default function Cart({ items, onClose, onClearCart, onCheckoutSuccess })
   return (
     <div className="cart-overlay">
       <button className="back-btn accent-text detail-close-btn" onClick={onClose}>
-        ↓ Keep Browsing
+        ← Back
       </button>
 
       <div className="cart-scroll-area">
