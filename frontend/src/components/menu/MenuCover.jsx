@@ -10,12 +10,7 @@ export default function MenuCover({ isOpen, onOpen }) {
       aria-label="Tap to open menu"
     >
       <h1 className="display-text cover-title" style={{ fontSize: '2.5rem' }}>THE MIDNIGHT PANCHAYAT</h1>
-      <p className="accent-text cover-subtitle">Est. 1974</p>
-      <div style={{ marginTop: '2rem' }}>
-        <p className="price-text" style={{ letterSpacing: '2px', textTransform: 'uppercase' }}>Good Coffee</p>
-        <p className="price-text" style={{ letterSpacing: '2px', textTransform: 'uppercase' }}>Good Company</p>
-      </div>
-      <p className="accent-text cover-cta">Tap to Open</p>
+      <p className="cover-cta" style={{ fontWeight: 'bold', textTransform: 'uppercase', marginTop: '1.5rem', fontSize: '1.2rem' }}>TAP TO OPEN</p>
     </div>
   );
 }
