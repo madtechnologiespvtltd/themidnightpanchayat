@@ -76,43 +76,74 @@
 
 .category-index {
   padding: 3rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .category-index-title {
   text-align: center;
-  font-size: 2rem;
-  margin-bottom: 3rem;
-  border-bottom: 2px solid var(--color-coffee);
-  padding-bottom: 1rem;
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  padding-bottom: 0.5rem;
+  position: relative;
+}
+
+.category-index-title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 20%;
+  width: 60%;
+  height: 2px;
+  background-color: var(--color-mustard);
 }
 
 .category-list {
   list-style: none;
+  width: 100%;
+  max-width: 400px;
 }
 
 .category-item {
   display: flex;
   justify-content: space-between;
-  align-items: baseline;
+  align-items: center;
   font-size: 1.75rem;
   font-family: var(--font-display);
   color: var(--color-deep-coffee);
   margin-bottom: 1.5rem;
   cursor: pointer;
-  transition: color var(--motion-fast);
+  transition: transform var(--motion-fast), color var(--motion-fast);
+  padding: 1rem;
+  border: 1px solid transparent;
+  border-radius: 8px;
 }
 
 .category-item:hover, .category-item:active {
   color: var(--color-burnt-orange);
+  background-color: rgba(90, 56, 37, 0.05);
+  border-color: rgba(90, 56, 37, 0.1);
+  transform: translateX(5px);
 }
 
 .category-leader {
   flex-grow: 1;
-  border-bottom: 2px dotted var(--color-mustard);
-  margin: 0 10px;
+  border-bottom: 2px dotted rgba(53, 35, 25, 0.3);
+  margin: 0 15px;
   position: relative;
-  top: -6px;
-  opacity: 0.6;
+  top: 5px;
+}
+
+.category-arrow {
+  font-size: 1.2rem;
+  color: var(--color-mustard);
+  opacity: 0.5;
+  transition: opacity var(--motion-fast);
+}
+
+.category-item:hover .category-arrow {
+  opacity: 1;
 }
 
 /* --- Phase 3: Dish Carousel --- */
@@ -550,8 +581,63 @@
 .form-group input:focus {
   outline: none;
   border-color: var(--color-burnt-orange);
+  background-color: rgba(255, 255, 255, 0.5);
+  box-shadow: 0 0 0 3px rgba(211, 84, 0, 0.1);
 }
 
 .category-icon {
   font-size: 1.25rem;
+}
+
+/* --- Phase 1 Polish: Toast Notifications --- */
+.toast-container {
+  position: fixed;
+  top: 20px;
+  left: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  z-index: 1000;
+  pointer-events: none;
+}
+
+.toast-notification {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 24px;
+  border-radius: 50px;
+  background-color: var(--color-deep-coffee);
+  color: var(--color-ivory);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease;
+  pointer-events: auto;
+}
+
+.toast-hidden {
+  transform: translateY(-50px) scale(0.9);
+  opacity: 0;
+}
+
+.toast-visible {
+  transform: translateY(0) scale(1);
+  opacity: 1;
+}
+
+.toast-icon {
+  font-size: 1.2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 24px;
+  height: 24px;
+  background-color: var(--color-olive);
+  border-radius: 50%;
+  color: white;
+}
+
+.toast-info .toast-icon {
+  background-color: var(--color-mustard);
 }

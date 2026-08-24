@@ -22,6 +22,12 @@ export default function DashboardLayout() {
           <Link to="/menu" className={location.pathname === '/menu' ? 'active' : ''}>
             Menu Manager
           </Link>
+          <Link to="/tables" className={location.pathname === '/tables' ? 'active' : ''}>
+            Tables & QR
+          </Link>
+          <Link to="/settings" className={location.pathname === '/settings' ? 'active' : ''}>
+            Settings
+          </Link>
         </nav>
         <div className="sidebar-footer">
           <button onClick={handleLogout} className="btn-secondary">Logout</button>

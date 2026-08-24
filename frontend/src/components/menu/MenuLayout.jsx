@@ -2,19 +2,28 @@ import React, { useState, useEffect } from 'react';
 import MenuCover from './MenuCover';
 import CategoryIndex from './CategoryIndex';
 import DishCarousel from './DishCarousel';
-import DishDetail from './DishDetail';
 import Cart from '../cart/Cart';
-import { fetchCategories, fetchMenuItems, submitStaffRequest } from '../../data/api';
+import OrderStatus from '../cart/OrderStatus';
+import Toast from '../common/Toast';
+import { fetchCategories, fetchMenuItems } from '../../data/api';
 import '../../theme/menu.css';
 
 export default function MenuLayout() {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(null);
-  const [selectedDish, setSelectedDish] = useState(null);
   
   // Cart State
   const [cartItems, setCartItems] = useState([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
+
+  // Active Order State
+  const [activeOrder, setActiveOrder] = useState(() => {
+    const saved = localStorage.getItem('activeOrder');
+    return saved ? JSON.parse(saved) : null;
+  });
+
+  // Toast State
+  const [toast, setToast] = useState(null);
   const [categories, setCategories] = useState([]);
   const [menuItems, setMenuItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -39,16 +48,22 @@ export default function MenuLayout() {
       addons
     };
     setCartItems([...cartItems, newItem]);
-    setSelectedDish(null);
+    setToast({ message: `${quantity}x ${dish.name} added to cart`, type: 'success' });
   };
 
-  const notifyStaff = (action) => {
-    const table = prompt('Please enter your table number for this request:');
-    if (!table) return;
-    submitStaffRequest(table, action)
-      .then(() => alert(`Waiter notified for: ${action}`))
-      .catch(() => alert('Failed to notify staff. Please try again.'));
+  const handleCheckoutSuccess = (orderId, customerDetails) => {
+    const orderData = { orderId, customerDetails };
+    setActiveOrder(orderData);
+    localStorage.setItem('activeOrder', JSON.stringify(orderData));
+    setIsCartOpen(false);
   };
+
+  const handleNewOrder = () => {
+    setActiveOrder(null);
+    localStorage.removeItem('activeOrder');
+  };
+
+
 
   // Filter items for the selected category
   const categoryItems = selectedCategory 
@@ -57,6 +72,16 @@ export default function MenuLayout() {
 
   if (isLoading) {
     return <div style={{ display: 'flex', height: '100%', alignItems: 'center', justifyContent: 'center', fontFamily: 'var(--font-heading)', color: 'var(--color-coffee)' }}>Opening Menu...</div>;
+  }
+
+  if (activeOrder) {
+    return (
+      <OrderStatus 
+        orderId={activeOrder.orderId}
+        customerDetails={activeOrder.customerDetails}
+        onNewOrder={handleNewOrder}
+      />
+    );
   }
 
   return (
@@ -74,26 +99,14 @@ export default function MenuLayout() {
         top: 0,
         left: 0
       }}>
-        {/* Quick Actions (only visible when browsing, not in cart) */}
-        {isOpen && !isCartOpen && (
-          <div className="action-btn-group">
-            <button className="quick-action-btn" onClick={() => notifyStaff('Call Staff')}>Call Staff</button>
-            <button className="quick-action-btn" onClick={() => notifyStaff('Request Bill')}>Bill</button>
-          </div>
-        )}
 
-        {selectedDish ? (
-          <DishDetail 
-            dish={selectedDish} 
-            onBack={() => setSelectedDish(null)} 
-            onAddToCart={handleAddToCart}
-          />
-        ) : selectedCategory ? (
+
+        {selectedCategory ? (
           <DishCarousel 
             category={selectedCategory} 
             items={categoryItems} 
             onBack={() => setSelectedCategory(null)} 
-            onSelectDish={setSelectedDish}
+            onAddToCart={handleAddToCart}
           />
         ) : (
           <CategoryIndex 
@@ -119,7 +132,19 @@ export default function MenuLayout() {
           items={cartItems} 
           onClose={() => setIsCartOpen(false)}
           onClearCart={() => setCartItems([])}
+          onCheckoutSuccess={handleCheckoutSuccess}
         />
+      )}
+      
+      {/* Toast Notification Container */}
+      {toast && (
+        <div className="toast-container">
+          <Toast 
+            message={toast.message} 
+            type={toast.type} 
+            onClose={() => setToast(null)} 
+          />
+        </div>
       )}
     </div>
   );

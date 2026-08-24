@@ -3,6 +3,13 @@
 -- Enable UUID extension
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
+-- Drop existing tables so you can re-run this cleanly
+DROP TABLE IF EXISTS staff_requests CASCADE;
+DROP TABLE IF EXISTS order_items CASCADE;
+DROP TABLE IF EXISTS orders CASCADE;
+DROP TABLE IF EXISTS menu_items CASCADE;
+DROP TABLE IF EXISTS categories CASCADE;
+
 -- 1. Categories Table
 CREATE TABLE categories (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -60,14 +67,26 @@ alter publication supabase_realtime add table orders;
 alter publication supabase_realtime add table staff_requests;
 alter publication supabase_realtime add table menu_items;
 
--- Insert Mock Data
-INSERT INTO categories (id, name, sort_order) VALUES
-('b3035b89-22a3-4886-90fc-2db8b919d3ee', 'COFFEE', 1),
-('6debe1cd-c8dc-4e20-bca4-d13fb597ea3b', 'TEA', 2),
-('05bbecf2-951c-4b55-a083-d922ec219808', 'BREAKFAST', 3);
+-- The database data can be populated by running `node seed_menu.mjs` in the frontend directory.
 
-INSERT INTO menu_items (category_id, name, description, price, presentation_type, image_url, variants) VALUES
-('b3035b89-22a3-4886-90fc-2db8b919d3ee', 'Espresso', 'A rich, full-bodied shot of our signature house blend.', 120, 'cup', '/food/espresso.png', '[{"id": "v1", "name": "Single", "priceDelta": 0}, {"id": "v2", "name": "Double", "priceDelta": 50}]'),
-('b3035b89-22a3-4886-90fc-2db8b919d3ee', 'Cappuccino', 'Classic espresso topped with deeply steamed milk and a thick layer of foam.', 180, 'cup', '/food/cappuccino.png', '[{"id": "v1", "name": "Regular", "priceDelta": 0}, {"id": "v2", "name": "Large", "priceDelta": 40}]'),
-('6debe1cd-c8dc-4e20-bca4-d13fb597ea3b', 'Masala Chai', 'Traditional spiced tea.', 80, 'cup', '/food/chai.png', '[]'),
-('05bbecf2-951c-4b55-a083-d922ec219808', 'Pancakes', 'Fluffy buttermilk pancakes with maple syrup.', 220, 'plate', null, '[]');
+-- Disable RLS or set open policies so the frontend can access data without logging in
+ALTER TABLE categories ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Categories are public." ON categories FOR SELECT USING (true);
+
+ALTER TABLE menu_items ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Menu items are public." ON menu_items FOR SELECT USING (true);
+CREATE POLICY "Menu items are updatable." ON menu_items FOR UPDATE USING (true);
+
+ALTER TABLE orders ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Orders can be created." ON orders FOR INSERT WITH CHECK (true);
+CREATE POLICY "Orders can be viewed." ON orders FOR SELECT USING (true);
+CREATE POLICY "Orders can be updated." ON orders FOR UPDATE USING (true);
+
+ALTER TABLE order_items ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Order items can be created." ON order_items FOR INSERT WITH CHECK (true);
+CREATE POLICY "Order items can be viewed." ON order_items FOR SELECT USING (true);
+
+ALTER TABLE staff_requests ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Requests can be created." ON staff_requests FOR INSERT WITH CHECK (true);
+CREATE POLICY "Requests can be viewed." ON staff_requests FOR SELECT USING (true);
+CREATE POLICY "Requests can be updated." ON staff_requests FOR UPDATE USING (true);

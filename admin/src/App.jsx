@@ -5,6 +5,8 @@ import Login from './Login';
 import DashboardLayout from './DashboardLayout';
 import KitchenQueue from './KitchenQueue';
 import MenuManager from './MenuManager';
+import TablesManager from './TablesManager';
+import SettingsManager from './SettingsManager';
 import './admin.css';
 
 function App() {
@@ -39,6 +41,8 @@ function App() {
           <Route index element={<Navigate to="/queue" replace />} />
           <Route path="queue" element={<KitchenQueue />} />
           <Route path="menu" element={<MenuManager />} />
+          <Route path="tables" element={<TablesManager />} />
+          <Route path="settings" element={<SettingsManager />} />
         </Route>
       </Routes>
     </BrowserRouter>

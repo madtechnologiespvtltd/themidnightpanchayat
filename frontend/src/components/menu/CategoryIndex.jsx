@@ -13,8 +13,9 @@ export default function CategoryIndex({ categories, onSelectCategory }) {
             tabIndex={0}
             onClick={() => onSelectCategory(category)}
           >
-            <span>{category.name}</span>
-            <span className="category-leader"></span>
+            <span className="category-name">{category.name}</span>
+            <div className="category-leader"></div>
+            <span className="category-arrow">→</span>
           </li>
         ))}
       </ul>

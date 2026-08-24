@@ -36,8 +36,8 @@ export default function DishDetail({ item, onClose, onAddToCart }) {
       <div className="detail-scroll-area">
         <div className="detail-hero">
           <div className="dish-object-placeholder detail-object animate-dish-scale">
-            {item.image ? (
-              <img src={item.image} alt={item.name} className="dish-real-image" />
+            {item.image_url ? (
+              <img src={item.image_url} alt={item.name} className="dish-real-image" />
             ) : (
               <span className="dish-object-icon">
                 {item.presentationType === 'cup' ? '☕' : '🍽️'}

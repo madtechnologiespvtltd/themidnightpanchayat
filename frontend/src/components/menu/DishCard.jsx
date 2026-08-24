@@ -4,8 +4,8 @@ export default function DishCard({ item, onClick }) {
   return (
     <div className="dish-card" onClick={onClick} role="button" tabIndex={0}>
       <div className="dish-object-placeholder">
-        {item.image ? (
-          <img src={item.image} alt={item.name} className="dish-real-image" />
+        {item.image_url ? (
+          <img src={item.image_url} alt={item.name} className="dish-real-image" />
         ) : (
           <span className="dish-object-icon">
             {item.presentationType === 'cup' ? '☕' : '🍽️'}

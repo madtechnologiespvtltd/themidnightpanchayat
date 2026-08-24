@@ -62,17 +62,3 @@ export async function createOrder(customerDetails, cartItems, totalAmount) {
   return orderData;
 }
 
-export async function submitStaffRequest(tableNumber, requestType) {
-  const { error } = await supabase
-    .from('staff_requests')
-    .insert([{
-      table_number: parseInt(tableNumber, 10),
-      request_type: requestType,
-      status: 'pending'
-    }]);
-    
-  if (error) {
-    console.error('Error submitting staff request:', error);
-    throw error;
-  }
-}
