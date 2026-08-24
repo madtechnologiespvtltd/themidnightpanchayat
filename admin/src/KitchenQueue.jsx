@@ -8,7 +8,6 @@ export default function KitchenQueue() {
   const loadOrders = async () => {
     const { data } = await supabase.from('orders')
       .select('*, order_items(*, menu_items(name, price))')
-      .neq('status', 'Served')
       .order('created_at', { ascending: true });
     
     if (data) setOrders(data);
@@ -28,6 +27,16 @@ export default function KitchenQueue() {
 
   const updateStatus = async (id, newStatus) => {
     await supabase.from('orders').update({ status: newStatus }).eq('id', id);
+  };
+
+  const deleteOrder = async (id) => {
+    if (!confirm('Are you sure you want to delete this order?')) return;
+    const { error } = await supabase.from('orders').delete().eq('id', id);
+    if (!error) {
+      setOrders(orders.filter(order => order.id !== id));
+    } else {
+      alert('Failed to delete order.');
+    }
   };
 
   const handlePrintReceipt = () => {
@@ -73,15 +82,15 @@ export default function KitchenQueue() {
               ))}
             </ul>
             
-            <div className="order-actions" style={{ display: 'flex', gap: '0.5rem', marginTop: '1rem' }}>
+            <div className="order-actions" style={{ display: 'flex', gap: '0.5rem', marginTop: '1rem', flexWrap: 'wrap' }}>
               {order.status === 'Received' && (
-                <button onClick={() => updateStatus(order.id, 'Preparing')} className="btn-primary" style={{ flex: 1 }}>Start</button>
+                <button onClick={() => updateStatus(order.id, 'Preparing')} className="btn-primary" style={{ flex: 1, minWidth: '80px' }}>Start</button>
               )}
               {order.status === 'Preparing' && (
-                <button onClick={() => updateStatus(order.id, 'Ready')} className="btn-success" style={{ flex: 1 }}>Ready</button>
+                <button onClick={() => updateStatus(order.id, 'Ready')} className="btn-success" style={{ flex: 1, minWidth: '80px' }}>Ready</button>
               )}
               {order.status === 'Ready' && (
-                <button onClick={() => updateStatus(order.id, 'Served')} className="btn-secondary" style={{ flex: 1 }}>Serve</button>
+                <button onClick={() => updateStatus(order.id, 'Served')} className="btn-secondary" style={{ flex: 1, minWidth: '80px' }}>Serve</button>
               )}
               <button 
                 onClick={() => setSelectedReceiptOrder(order)} 
@@ -89,6 +98,13 @@ export default function KitchenQueue() {
                 style={{ background: '#f1f5f9', color: '#334155', border: '1px solid #cbd5e1', padding: '0.5rem 1rem' }}
               >
                 Receipt
+              </button>
+              <button 
+                onClick={() => deleteOrder(order.id)} 
+                className="btn-secondary" 
+                style={{ background: '#fee2e2', color: '#ef4444', borderColor: '#ef4444', padding: '0.5rem 1rem' }}
+              >
+                Delete
               </button>
             </div>
           </div>

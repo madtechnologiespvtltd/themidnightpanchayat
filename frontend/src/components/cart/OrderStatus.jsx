@@ -74,7 +74,7 @@ export default function OrderStatus({ orderId, customerDetails, onNewOrder }) {
 
       {/* Digital Receipt / Bill Section */}
       {order && (
-        <div className="card animate-fade-in" style={{ width: '85%', margin: '0 auto 2rem', padding: '1.5rem', background: '#FAF6EE', border: '2px solid var(--color-coffee)', borderRadius: '12px', textAlign: 'left', color: 'var(--color-deep-coffee)', boxShadow: '0 4px 12px rgba(0,0,0,0.05)' }}>
+        <div className="card animate-fade-in print-area" style={{ width: '85%', margin: '0 auto 2rem', padding: '1.5rem', background: '#FAF6EE', border: '2px solid var(--color-coffee)', borderRadius: '12px', textAlign: 'left', color: 'var(--color-deep-coffee)', boxShadow: '0 4px 12px rgba(0,0,0,0.05)' }}>
           <h4 style={{ fontFamily: 'var(--font-heading)', borderBottom: '1px dashed var(--color-coffee)', paddingBottom: '0.5rem', marginBottom: '1rem', textAlign: 'center', fontSize: '1.2rem', textTransform: 'uppercase', letterSpacing: '1px' }}>Receipt / Bill</h4>
           
           <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem', marginBottom: '0.35rem', opacity: 0.8 }}>
@@ -133,14 +133,34 @@ export default function OrderStatus({ orderId, customerDetails, onNewOrder }) {
               <span>₹{order.total_amount}</span>
             </div>
           </div>
+
+          <div className="no-print" style={{ display: 'flex', gap: '1rem', marginTop: '1.5rem' }}>
+            <button 
+              onClick={() => window.print()} 
+              className="add-to-cart-btn display-text" 
+              style={{ padding: '0.8rem', fontSize: '1.1rem', background: 'var(--color-coffee)', color: 'white', border: 'none', borderRadius: '6px', cursor: 'pointer', width: '100%' }}
+            >
+              Download Receipt
+            </button>
+          </div>
         </div>
       )}
 
       {currentStep === 3 && (
-        <button className="add-to-cart-btn display-text animate-fade-in" onClick={onNewOrder} style={{ width: '85%', margin: '0 auto 2rem' }}>
+        <button className="add-to-cart-btn display-text animate-fade-in no-print" onClick={onNewOrder} style={{ width: '85%', margin: '0 auto 2rem' }}>
           Start New Order
         </button>
       )}
+
+      {/* Print styles to only show receipt */}
+      <style>{`
+        @media print {
+          .no-print { display: none !important; }
+          body * { visibility: hidden; }
+          .print-area, .print-area * { visibility: visible; }
+          .print-area { position: absolute; left: 0; top: 0; width: 100%; box-shadow: none !important; border: none !important; padding: 0 !important; background: white !important; }
+        }
+      `}</style>
     </div>
   );
 }
