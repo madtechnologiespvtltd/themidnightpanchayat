@@ -8,7 +8,7 @@ export default function Cart({ items, onClose, onClearCart, onCheckoutSuccess })
   const [customerDetails, setCustomerDetails] = useState(() => {
     const params = new URLSearchParams(window.location.search);
     const table = params.get('table') || '';
-    return { name: '', phone: '', table };
+    return { name: '', phone: '', table, transactionId: '' };
   });
 
   const calculateSubtotal = () => {
@@ -118,11 +118,26 @@ export default function Cart({ items, onClose, onClearCart, onCheckoutSuccess })
             </div>
 
             {paymentQr && (
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem', background: 'rgba(90, 56, 37, 0.05)', padding: '1rem', borderRadius: '8px', border: '1px dashed var(--color-coffee)', marginTop: '0.5rem' }}>
-                <span style={{ fontWeight: 'bold', fontFamily: 'var(--font-heading)' }}>Scan to Pay</span>
-                <img src={paymentQr} alt="Payment QR" style={{ maxWidth: '180px', height: 'auto', borderRadius: '4px', background: 'white', padding: '5px' }} />
-                <span style={{ fontSize: '0.85rem', opacity: 0.8, textAlign: 'center' }}>Please scan the QR code above to pay before confirming.</span>
-              </div>
+              <>
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem', background: 'rgba(90, 56, 37, 0.05)', padding: '1rem', borderRadius: '8px', border: '1px dashed var(--color-coffee)', marginTop: '0.5rem' }}>
+                  <span style={{ fontWeight: 'bold', fontFamily: 'var(--font-heading)' }}>Scan to Pay</span>
+                  <img src={paymentQr} alt="Payment QR" style={{ maxWidth: '180px', height: 'auto', borderRadius: '4px', background: 'white', padding: '5px' }} />
+                  <span style={{ fontSize: '0.85rem', opacity: 0.8, textAlign: 'center' }}>Please scan the QR code above to pay before confirming.</span>
+                </div>
+                
+                <div className="form-group" style={{ marginTop: '1rem' }}>
+                  <label htmlFor="transactionId">Transaction ID / UTR *</label>
+                  <input 
+                    type="text" 
+                    id="transactionId" 
+                    required 
+                    value={customerDetails.transactionId}
+                    onChange={(e) => setCustomerDetails({...customerDetails, transactionId: e.target.value})}
+                    disabled={isProcessing}
+                    placeholder="e.g. 123456789012"
+                  />
+                </div>
+              </>
             )}
           </form>
         </div>

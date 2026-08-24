@@ -35,7 +35,8 @@ export async function createOrder(customerDetails, cartItems, totalAmount) {
       customer_phone: customerDetails.phone,
       table_number: parseInt(customerDetails.table, 10),
       total_amount: totalAmount,
-      status: 'Received'
+      status: 'Received',
+      transaction_id: customerDetails.transactionId || null
     }])
     .select()
     .single();
