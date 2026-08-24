@@ -7,10 +7,7 @@ export default function TablesManager() {
   const [loading, setLoading] = useState(true);
   const [newTableNumber, setNewTableNumber] = useState('');
   
-  // Base URL for the QR code. You can modify this to match your production frontend URL.
-  const [baseUrl, setBaseUrl] = useState(
-    window.location.hostname === 'localhost' ? 'http://localhost:5173' : 'https://your-frontend-url.com'
-  );
+  const baseUrl = 'https://test-projects-olive.vercel.app';
 
   useEffect(() => {
     fetchTables();
@@ -89,21 +86,7 @@ export default function TablesManager() {
         <button className="btn-primary no-print" onClick={handlePrint}>Print All QR Codes</button>
       </div>
 
-      <div className="card no-print" style={{ marginBottom: '2rem', padding: '1.5rem' }}>
-        <h3>QR Code Settings</h3>
-        <p style={{ fontSize: '0.9rem', color: '#666', marginBottom: '1rem' }}>
-          This is the base URL that the QR codes will point to. Set this to your frontend app's public URL.
-        </p>
-        <div style={{ display: 'flex', gap: '1rem' }}>
-          <input 
-            type="text" 
-            value={baseUrl} 
-            onChange={(e) => setBaseUrl(e.target.value)} 
-            placeholder="https://themidnightpanchayat.com"
-            style={{ flex: 1, padding: '0.5rem' }}
-          />
-        </div>
-      </div>
+
 
       <div className="card no-print" style={{ marginBottom: '2rem', padding: '1.5rem' }}>
         <h3>Add New Table</h3>
